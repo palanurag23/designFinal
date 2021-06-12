@@ -1,0 +1,136 @@
+ //////////////////////////////////////////////////////////////////UBUNTU      _ GIT_         NOTES ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+(using ubuntu commands)
+                                              {
+                                                to go a level back////////////// cd ..
+
+                                                to open ant local disc(example c drive)///////////// step 1  \\ cd mnt //////////// step 2  \\  cd  c
+
+                                                to know what files and folders are present inside /////////(known as list command)//////// ls
+                                                
+                                                to make a new folder///////(make a directory)/////// mkdir "folder name"     ___Ex-  mkdir project
+
+                                                to remove a folder////////////////////(remove file command with a flag -rf(to tell we are removing a directory/folder not a file))
+                                                                               ///////////////////// rm -rf  "folder name"/       __Ex-   rm -rf  project/
+
+                                                to create a file/////////////// touch  file.txt
+
+                                                to remove a file /////////// rm file.txt
+			to remove a folder////////rm -rf "folder name"
+			to remove a folder/////////rmdir "folder name"
+
+
+                                               }
+
+(git commands for adding and removing)
+                                              {
+                                                to initialize an empty git reposetory at that path/place///////////////////////// git init
+
+                                                to include a file in what will be committed///////////(adds file to staging area)////////////  git add file.txt
+
+                                                to include everything in what will be committed////////////(adds files, folders and everything inside them to staging area)///////////  git add .
+
+                                                to remove file from staging area////////////// git rm --cached file.txt
+
+                                                to check git status/////////////////////// git status
+
+                                                to exclude a file in what will be committed///////////////////////  git rm file.txt                                                
+
+                                                to exclude a file FORCE FULLY in what will be committed///////////(it will delete the file completly...from your pc too)////////////  git rm -f  file.txt                                                
+                                                to remove all files fron cached at once(from working directory)/////////////git rm -r --cached .
+                                               }
+
+(..........git..........commit................ )
+                                                {
+          		            to commit with a message/////////////git commit -m "initial commit"
+
+                                                to commit untracked file you removed earlier//////////git commit -a -m "commiting untracked file"
+
+                                                to see your commit history///////////////// git log
+
+                                                to see your commit history in short///////////////// git log --oneline
+
+                                                 }
+(.........git............checkout...............)
+                                                {
+       		             to go back in time to some past commit form master branch /////////// git  checkout  "that commit ID"
+
+                                                 to go forward in time to the latest commit and in the master branch///////////// git checkout master
+
+                                                 
+                                                }
+(.......git revert _and_git reset.......)
+                                                {
+                                                 to go a commit back in time and set it as master branch////////////////// git revert  "latest commit ID".......one revert after another cancel out previous one
+
+                                                 to RESET back to some previous commit and delete all commits after that one (and make it new head ie master) ///////////////////////////git reset --hard "commit ID"
+
+
+                                                      soft reset
+
+                                                     mixed reset
+
+                                                 }
+(git ...............ignore.....................)
+                                                  {
+			create a file    .gitignore and list the names of files and folders you wanna ignore like file.txt folder/*
+			then add this file and commit
+			after that all those files and folders will be ignored from now listed inside .gitignore
+		              }
+(.........BRANCHES ........................)
+                                                   { first u have to make an initial commit then you can start working on branches, other wise your development branch will be considered your master branch,
+			but that should me your release branch
+
+			to create a branch /////// git branch "name of the branch"
+
+                                                      to create a branch and switch to it now/////////////git checkout -b "mane of the branch"
+
+			to switch back to master branch/////////////////git checkout master
+
+			to list all current branches/////////(all -a flag)///////////git branch -a
+			
+			to change branch//////////////////git checkout "branch name"
+
+			to remove / delete a branch////////////////git branch -d "branch name"
+
+	CONFUSION		to merge into another branch ///////////git merge "branch name"
+			}
+
+(CONNECTING GIT REPO REMOTLY)
+			{
+			first ////git init \\\\\\inside your folder
+			then copy the http link from your git hub repository
+			now run command/////git remote add origin "that http link"
+			now they are connected
+			git remote -v shows you all of your remote origins.
+			}
+(.......PULLING.....FROM GIT..................)
+                                                      {
+			to pull everything ////////////////////git pull
+			to pull from a branch////////////////git pull origin "branch name"
+			}
+(..........PUSHING.........TO   GIT...............)
+			{
+			to push to a branch//////////////////////git push origin "branch name"
+			to push and want terminal to remember the branch you pushed on////////////////////////git push -u origin "branch name"
+			one branch is remembered\\\you can easly do git push and git pull....thats it
+			if you just open the terminal and run git push...it will push to main/master branch from main/master branch.......so remember steo 2
+			}
+(.........DELETING_A_BRANCH_REMOTELY..........)
+			{
+			git push origin --delete "branch name"
+			}
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
