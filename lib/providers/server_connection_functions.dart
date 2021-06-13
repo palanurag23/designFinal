@@ -76,6 +76,7 @@ class Server_Connection_Functions {
     List<Event> eves = [];
     var accessToken =
         Provider.of<AccessTokenData>(context, listen: false).accessToken;
+    print('///////access token event fetch');
     var accessTokenValue = accessToken[0];
     Map<String, String> headersEvents = {
       "Content-type": "application/json",
@@ -110,24 +111,35 @@ class Server_Connection_Functions {
       int type,
       DateTime dateTime,
       TimeOfDay timeOfDay) async {
-    int hours =
-        Provider.of<AddEventScreenData>(context, listen: false).getHours();
+    print('x1');
+    var hours =
+        await Provider.of<AddEventScreenData>(context, listen: false).hours;
+    print('$hours');
     int minutes =
-        Provider.of<AddEventScreenData>(context, listen: false).getMinutes();
+        await Provider.of<AddEventScreenData>(context, listen: false).minutes;
+    print('$minutes');
+
     var accessToken =
-        Provider.of<AccessTokenData>(context, listen: false).accessToken;
+        await Provider.of<AccessTokenData>(context, listen: false).accessToken;
+    print('$accessToken');
+
     var accessTokenValue = accessToken[0];
-    await Provider.of<OwnerIdData>(context, listen: false).fetchAndSetData();
-    int owner = Provider.of<OwnerIdData>(context, listen: false).ownerID[0];
+    print('1');
+//it takes time to fetch and function moves on..
+//its better to fetch it on loading screen
+//await Provider.of<OwnerIdData>(context, listen: false).fetchAndSetData();
+    int owner1 = Provider.of<OwnerIdData>(context, listen: false).ownerID[0];
     Map<String, String> headersCreateEvent = {
       "Content-type": "application/json",
       "accept": "application/json",
       "Authorization": "Bearer $accessTokenValue"
     };
+    print('1');
     DateTime date_time = DateTime(dateTime.year, dateTime.month, dateTime.day,
         timeOfDay.hour, timeOfDay.minute);
+    print('1');
     Map mapjsonBody = {
-      "owner": owner,
+      "owner": owner1,
       "name": "$name",
       "description": "$description",
       "date_time": "${date_time.toIso8601String()}",
@@ -137,11 +149,13 @@ class Server_Connection_Functions {
       "type_event": "${type.toString()}",
       "user_registered": true
     };
+    print('1');
     http.Response response = await http.post(
         Uri.https('dtu-otg.herokuapp.com', 'events/create/'),
         headers: headersCreateEvent,
         body: json.encode(mapjsonBody));
     print('///////resp CREATE EVENT  ${response.body}');
+    print('1');
     Map<String, dynamic> resp = json.decode(response.body);
     return resp;
   }

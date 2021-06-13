@@ -17,6 +17,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     if (!initialized) {
+      await Provider.of<OwnerIdData>(context, listen: false).fetchAndSetData();
       await Provider.of<AccessTokenData>(context, listen: false)
           .fetchAndSetData();
       var accessToken =

@@ -314,9 +314,10 @@ class OwnerIdData with ChangeNotifier {
 
   void addOwnerId(int id) async {
     this.ownerID = [id];
-
+    print('ownerid saving//////////////');
     // DbHelper.deleteSingleHeight('id');
     DbHelper.insertOwnerId('ownerId', {'id': 'id', 'ownerId': id});
+
     notifyListeners();
   }
 
@@ -328,7 +329,7 @@ class OwnerIdData with ChangeNotifier {
     } else {
       print(ownerIdData);
 
-      ownerID = [(ownerIdData[0]['ownerId'])];
+      this.ownerID = [(ownerIdData[0]['ownerId'])];
 
       print('................ownerID fetched and set$ownerID');
     }

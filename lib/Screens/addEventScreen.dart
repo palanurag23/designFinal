@@ -38,13 +38,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Duration _duration = Duration(hours: 0, minutes: 0);
   @override
   Widget build(BuildContext context) {
-    BuildContext bc =
-        Provider.of<TabsScreenContext>(context, listen: false).get();
+    // BuildContext bc =
+    //     Provider.of<TabsScreenContext>(context, listen: false).get();
     var data = Provider.of<AddEventScreenData>(context, listen: true);
     return Scaffold(
       persistentFooterButtons: [
         ElevatedButton.icon(
             onPressed: () async {
+              print('1');
               setState(() {
                 waiting = true;
               });
@@ -53,15 +54,15 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   name != null &&
                   description != null &&
                   type != null) {
+                print('2');
                 var scf = Provider.of<SCF>(context, listen: false).get();
-                Map<String, dynamic> resp = await scf.createEvent(
-                    bc, name.text, description.text, type, dateTime, timeOfDay);
-                scf.fetchListOfEvents(bc);
-                // if (resp["status"] == "OK") {
-                //   Navigator.of(context).pop();
-                // }
+                Map<String, dynamic> resp = await scf.createEvent(context,
+                    name.text, description.text, type, dateTime, timeOfDay);
+                scf.fetchListOfEvents(context);
+
+                print('3');
                 showDialog(
-                    context: bc,
+                    context: context,
                     builder: (context) {
                       return Dialog(
                         child: Padding(
@@ -70,6 +71,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         ),
                       );
                     });
+
+                if (resp["status"] == "OK") {
+                  Navigator.of(context).pop();
+                }
               }
               setState(() {
                 waiting = false;

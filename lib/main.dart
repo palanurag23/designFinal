@@ -101,13 +101,21 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(20),
         color: newcolor,
       ),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Colors.brown,
-        ),
-        title: Text(
-          "log out",
-          style: general_text_style,
+      child: Builder(
+        builder: (_) => ListTile(
+          onTap: () async {
+            var result = await Provider.of<AccessTokenData>(_, listen: false)
+                .deleteAccessToken();
+            print('./////logout result $result');
+            if (result) Navigator.of(_).pushNamed('/AuthScreen');
+          },
+          leading: CircleAvatar(
+            backgroundColor: Colors.brown,
+          ),
+          title: Text(
+            "log out",
+            style: general_text_style,
+          ),
         ),
       ),
     ),
@@ -125,6 +133,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           title: Text("Schedule", style: general_text_style),
         ),
+      ),
+    ),
+    Builder(
+      builder: (_) => ListTile(
+        onTap: () {
+          Navigator.of(_).pushNamed('inviteScreen');
+        },
+        leading: Icon(
+          Icons.face_retouching_natural,
+          color: Colors.brown,
+        ),
+        title: Text("invite friends", style: general_text_style),
       ),
     ),
     ListTile(
@@ -982,8 +1002,9 @@ class _AddingPageState extends State<AddingPage> {
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CustomPage()));
+              //  Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => CustomPage()));
+              Navigator.of(context).pushNamed('AddEventScreen');
             },
             leading: Icon(
               FontAwesomeIcons.star,

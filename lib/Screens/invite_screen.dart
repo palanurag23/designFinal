@@ -59,10 +59,7 @@ class _InviteScreenState extends State<InviteScreen> {
                     waiting = true;
                   });
                   var scf = Provider.of<SCF>(context, listen: false).get();
-                  resp = await scf.invite(
-                      email.text,
-                      Provider.of<TabsScreenContext>(context, listen: false)
-                          .get());
+                  resp = await scf.invite(email.text, context);
                   setState(() {
                     waiting = false;
                     respCame = true;

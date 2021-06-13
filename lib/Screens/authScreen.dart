@@ -324,6 +324,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             if (resp["status"] != 'FAILED') {
                               Provider.of<OwnerIdData>(context, listen: false)
                                   .addOwnerId(resp["user_id"]);
+                              print(
+                                  'owner id///////////////////////////${resp["user_id"]}');
 
                               ///successfull login
                               print(resp["tokens"]["access"].toString());
@@ -352,7 +354,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                         listen: false)
                                     .addUsername(username.text);
 
-                                Navigator.of(context).pushNamed('/TabsScreen');
+                                Navigator.of(context).pushNamed('/homeScreen');
                               }
                             }
                           });

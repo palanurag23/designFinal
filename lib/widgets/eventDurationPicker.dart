@@ -35,8 +35,12 @@ class _DurationPickerState extends State<DurationPicker> {
                 onPressed: () {
                   Provider.of<AddEventScreenData>(context, listen: false)
                       .setMinutes(currentMinutes);
+                  print(
+                      '${Provider.of<AddEventScreenData>(context, listen: false).getMinutes()}');
                   Provider.of<AddEventScreenData>(context, listen: false)
                       .setHours(currentHours);
+                  print('set hours called');
+
                   Navigator.of(context).pop();
                 },
                 child: Text('ok'))

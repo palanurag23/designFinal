@@ -91,8 +91,9 @@ class DbHelper {
     String table,
     Map<String, Object> ownerId,
   ) async {
-    final dbForUsername = await DbHelper.dataBaseForOwnerId();
-    dbForUsername.insert(table, ownerId,
+    print('inserting owner id///////////////////////////////');
+    final dbForownerid = await DbHelper.dataBaseForOwnerId();
+    dbForownerid.insert(table, ownerId,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
   }
 
