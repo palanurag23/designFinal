@@ -101,7 +101,7 @@ class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
                               .getAccessToken(),
                           Provider.of<AccessTokenData>(context, listen: false)
                               .getDateTime());
-                  Navigator.of(context).pushNamed('/TabsScreen');
+                  Navigator.of(context).pushNamed('/homeScreen');
                 } else {
                   showDialog(
                       context: context,
