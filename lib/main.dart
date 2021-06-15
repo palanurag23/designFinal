@@ -1,4 +1,5 @@
 import 'package:date_time_picker/date_time_picker.dart';
+import 'package:nilay_dtuotg_2/Screens/patchProfileData.dart';
 import './Screens/tabsScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         routes: {
+          'patchProfileScreen': (context) => PatchProfileScreen(),
           'inviteScreen': (context) => InviteScreen(),
           'AddEventScreen': (context) => AddEventScreen(),
           '/EventsDetailScreen': (context) => EventsDetailScreen(
@@ -114,6 +116,27 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           title: Text(
             "log out",
+            style: general_text_style,
+          ),
+        ),
+      ),
+    ),
+    Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: newcolor,
+      ),
+      child: Builder(
+        builder: (_) => ListTile(
+          onTap: () async {
+            print('.patch profile..');
+            Navigator.of(_).pushNamed('patchProfileScreen');
+          },
+          leading: CircleAvatar(
+            backgroundColor: Colors.brown,
+          ),
+          title: Text(
+            "patch profile",
             style: general_text_style,
           ),
         ),
