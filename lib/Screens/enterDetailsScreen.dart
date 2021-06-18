@@ -3,6 +3,8 @@ import 'package:nilay_dtuotg_2/providers/info_provider.dart';
 import 'package:nilay_dtuotg_2/widgets/rollNumberPicker.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import '../widgets/yearPicker.dart' as yp;
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +29,35 @@ class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    print('a');
+    PickedFile pickedFile;
+    // final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    try {
+      print('b');
+      pickedFile = await picker.getImage(
+        source: ImageSource.gallery,
+      );
+      print('${pickedFile.path}');
+    } catch (e) {
+      print('c');
+      print(e.code);
+    }
+    setState(() {
+      print('d');
+      if (pickedFile != null) {
+        print('e');
+        _image = File(pickedFile.path);
+      } else {
+        print('f');
+        print('No image selected.');
+      }
+    });
   }
 
   final formGlobalKey = GlobalKey<FormState>();
@@ -79,7 +110,8 @@ class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
                   "year": Provider.of<ProfileData>(context, listen: false)
                       .getYear(),
                   "batch":
-                      "${Provider.of<ProfileData>(context, listen: false).getBatch()}"
+                      "${Provider.of<ProfileData>(context, listen: false).getBatch()}",
+                  "image": _image
                 };
                 http.Response response = await http.put(
                     Uri.https(
@@ -127,6 +159,16 @@ class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
+              _image == null
+                  ? ListTile(
+                      leading: Icon(Icons.add_a_photo),
+                      title: Text('No image selected.'),
+                      onTap: getImage,
+                    )
+                  : Container(
+                      child: Image.file(_image),
+                      height: 100,
+                    ),
               Padding(
                 child: CupertinoTextFormFieldRow(
                   autovalidateMode: AutovalidateMode.onUserInteraction,

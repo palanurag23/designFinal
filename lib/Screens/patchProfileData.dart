@@ -3,6 +3,8 @@ import 'package:nilay_dtuotg_2/providers/info_provider.dart';
 import 'package:nilay_dtuotg_2/widgets/rollNumberPicker.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import '../widgets/yearPicker.dart' as yp;
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
@@ -41,6 +43,35 @@ class _PatchProfileScreenState extends State<PatchProfileScreen> {
     }
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+  }
+
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    print('a');
+    PickedFile pickedFile;
+    // final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    try {
+      print('b');
+      pickedFile = await picker.getImage(
+        source: ImageSource.gallery,
+      );
+      print('${pickedFile.path}');
+    } catch (e) {
+      print('c');
+      print(e.code);
+    }
+    setState(() {
+      print('d');
+      if (pickedFile != null) {
+        print('e');
+        _image = File(pickedFile.path);
+      } else {
+        print('f');
+        print('No image selected.');
+      }
+    });
   }
 
   final formGlobalKey = GlobalKey<FormState>();
@@ -94,7 +125,8 @@ class _PatchProfileScreenState extends State<PatchProfileScreen> {
                         "year": Provider.of<ProfileData>(context, listen: false)
                             .getYear(),
                         "batch":
-                            "${Provider.of<ProfileData>(context, listen: false).getBatch()}"
+                            "${Provider.of<ProfileData>(context, listen: false).getBatch()}",
+                        "image": _image
                       };
                       http.Response response = await http.patch(
                           Uri.https('dtu-otg.herokuapp.com',
@@ -110,15 +142,15 @@ class _PatchProfileScreenState extends State<PatchProfileScreen> {
                       if (resp["status"] != 'FAILED') {
                         //   Provider.of<ProfileData>(context, listen: false)
                         //     .saveSetedChanges();
-                        Provider.of<AccessTokenData>(context, listen: false)
-                            .addAccessToken(
-                                Provider.of<AccessTokenData>(context,
-                                        listen: false)
-                                    .getAccessToken(),
-                                Provider.of<AccessTokenData>(context,
-                                        listen: false)
-                                    .getDateTime());
-                        Navigator.of(context).pushNamed('/homeScreen');
+                        // Provider.of<AccessTokenData>(context, listen: false)
+                        //     .addAccessToken(
+                        //         Provider.of<AccessTokenData>(context,
+                        //                 listen: false)
+                        //             .getAccessToken(),
+                        //         Provider.of<AccessTokenData>(context,
+                        //                 listen: false)
+                        //             .getDateTime());
+                        Navigator.of(context).pop();
                       } else {
                         showDialog(
                             context: context,
@@ -145,6 +177,16 @@ class _PatchProfileScreenState extends State<PatchProfileScreen> {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: [
+                    _image == null
+                        ? ListTile(
+                            leading: Icon(Icons.add_a_photo),
+                            title: Text('No image selected.'),
+                            onTap: getImage,
+                          )
+                        : Container(
+                            child: Image.file(_image),
+                            height: 100,
+                          ),
                     Padding(
                       child: CupertinoTextFormFieldRow(
                         autovalidateMode: AutovalidateMode.onUserInteraction,

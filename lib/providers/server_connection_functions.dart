@@ -13,6 +13,7 @@ class Server_Connection_Functions {
   ) async {
     String username =
         Provider.of<UsernameData>(context, listen: false).username[0];
+    print(username);
     String accessToken =
         Provider.of<AccessTokenData>(context, listen: false).getAccessToken();
     Map<String, String> headersRegisterEvent = {

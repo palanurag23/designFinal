@@ -1,6 +1,6 @@
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:nilay_dtuotg_2/providers/server_connection_functions.dart';
-
+import '../models/screenArguments.dart';
 import '../models/events.dart';
 import 'package:flutter/material.dart';
 //import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -34,10 +34,14 @@ class _ScheduleTabState extends State<ScheduleTab> {
 
   List<Lecture> lectures = [];
   int weekDayIndex = 1;
+  var scf;
+
   List<Event> evesForSchedule = [];
   @override
   void didChangeDependencies() async {
     if (!initialized) {
+      scf = Provider.of<SCF>(context, listen: false).get();
+      await scf.fetchListOfEvents(context);
       evesForSchedule = Provider.of<EventsData>(context, listen: false).events;
       weekDayIndex = DateTime.now().weekday > 5 ? 5 : DateTime.now().weekday;
       await Provider.of<TimeTableData>(context, listen: false)
@@ -84,14 +88,14 @@ class _ScheduleTabState extends State<ScheduleTab> {
 
   @override
   Widget build(BuildContext context) {
-    sheduledToday = [];
-    sheduled.forEach((element) {
-      if ((element.dateime.day == _selectedDay.day) &&
-          (element.dateime.month == _selectedDay.month) &&
-          (element.dateime.year == _selectedDay.year)) {
-        sheduledToday.add(element);
-      }
-    });
+    sheduledToday = evesForSchedule;
+    // sheduled.forEach((element) {
+    //   if ((element.dateime.day == _selectedDay.day) &&
+    //       (element.dateime.month == _selectedDay.month) &&
+    //       (element.dateime.year == _selectedDay.year)) {
+    //     sheduledToday.add(element);
+    //   }
+    // });
 
     return Scaffold(
       body: Container(
@@ -174,9 +178,9 @@ class _ScheduleTabState extends State<ScheduleTab> {
                 Container(
                   height: 500,
                   child: ListView.builder(
-                      itemCount: sheduledToday.length,
+                      itemCount: evesForSchedule.length,
                       itemBuilder: (context, index) {
-                        var events = sheduledToday;
+                        var events = Provider.of<EventsData>(context).events;
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 5),
@@ -184,27 +188,60 @@ class _ScheduleTabState extends State<ScheduleTab> {
                             position: index,
                             child: SlideAnimation(
                               child: FlipAnimation(
-                                child: ListTile(
-                                  tileColor: events[index].favorite
-                                      ? Colors.redAccent
-                                      : Colors.blueGrey[900],
-                                  subtitle: Text(
-                                    events[index].eventType,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  leading: Icon(
-                                    Icons.ac_unit,
-                                    color: Colors.blue,
-                                  ),
-                                  title: Text(
-                                    events[index].name,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 19),
+                                  child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      '/EventsDetailScreen',
+                                      arguments: ScreenArguments(
+                                          id: events[index].id,
+                                          scf: scf,
+                                          context:
+                                              Provider.of<MaterialNavigatorKey>(
+                                                      context,
+                                                      listen: false)
+                                                  .materialNavigatorKey
+                                                  .currentContext));
+                                },
+                                tileColor: events[index].favorite
+                                    ? Colors.orangeAccent[100]
+                                    : Colors.black12,
+                                subtitle: Text(
+                                  events[index].eventType,
+                                  style: TextStyle(
+                                    color: Colors.brown,
                                   ),
                                 ),
-                              ),
+                                leading: Icon(
+                                  Icons.ac_unit,
+                                  color: Colors.brown,
+                                ),
+                                title: Text(
+                                  events[index].name,
+                                  style: TextStyle(
+                                      color: Colors.brown, fontSize: 19),
+                                ),
+                              )
+                                  // ListTile(
+                                  //   tileColor: events[index].favorite
+                                  //       ? Colors.redAccent
+                                  //       : Colors.blueGrey[900],
+                                  //   subtitle: Text(
+                                  //     events[index].eventType,
+                                  //     style: TextStyle(
+                                  //       color: Colors.white,
+                                  //     ),
+                                  //   ),
+                                  //   leading: Icon(
+                                  //     Icons.ac_unit,
+                                  //     color: Colors.blue,
+                                  //   ),
+                                  //   title: Text(
+                                  //     events[index].name,
+                                  //     style: TextStyle(
+                                  //         color: Colors.white, fontSize: 19),
+                                  //   ),
+                                  // ),
+                                  ),
                             ),
                           ),
                         );

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/info_provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:progress_indicators/progress_indicators.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void didChangeDependencies() async {
     // TODO: implement didChangeDependencies
     if (!initialized) {
+      await Provider.of<UsernameData>(context, listen: false).fetchAndSetData();
       await Provider.of<OwnerIdData>(context, listen: false).fetchAndSetData();
       await Provider.of<AccessTokenData>(context, listen: false)
           .fetchAndSetData();
@@ -61,8 +63,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       body: Center(
           child: Row(
         children: [
-          Text('loading..token..login..trying..'),
-          CircularProgressIndicator()
+          FadingText('Loading...'),
         ],
       )),
     );

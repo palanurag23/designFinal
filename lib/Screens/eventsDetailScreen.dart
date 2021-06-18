@@ -112,12 +112,14 @@ class _EventsDetailScreenState extends State<EventsDetailScreen> {
                       ),
                       ListTile(
                         onTap: () async {
-                          BuildContext bc = Provider.of<TabsScreenContext>(
+                          BuildContext bc = Provider.of<MaterialNavigatorKey>(
                                   context,
                                   listen: false)
-                              .get();
+                              .get()
+                              .currentContext;
                           var scf =
-                              Provider.of<SCF>(context, listen: false).get();
+                              Provider.of<SCF>(args.context, listen: false)
+                                  .get();
                           bool registered = _eventDetails.registered
                               ? await scf.unregisterForEvent(
                                   _eventDetails.id, bc)
@@ -125,8 +127,8 @@ class _EventsDetailScreenState extends State<EventsDetailScreen> {
                                   _eventDetails.id, bc);
                           // if (_eventDetails.registered != registered) {
                           //   //still not being added or removed from schedule
-                          //   Provider.of<EventsData>(args.context, listen: false)
-                          //       .changeFavoriteStatus(_eventDetails.id);
+                          //  Provider.of<EventsData>(bc, listen: false)
+                          //    .changeFavoriteStatus(_eventDetails.id);
                           // }
                           if (mounted)
                             setState(() {

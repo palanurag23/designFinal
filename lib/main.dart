@@ -21,7 +21,7 @@ import './providers/info_provider.dart';
 import './providers/server_connection_functions.dart';
 import 'package:provider/provider.dart';
 import 'package:rive/rive.dart';
-
+import './models/screenArguments.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -49,24 +49,30 @@ class MyApp extends StatelessWidget {
   Artboard _riveArtboard;
   bool _events_pressed = false;
   bool _adding_to_app_pressed = false;
+  GlobalKey materialNavigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context1) {
     return MultiProvider(
       providers: [
+        Provider.value(
+            value: MaterialNavigatorKey(
+                materialNavigatorKey: materialNavigatorKey)),
         ChangeNotifierProvider.value(value: TimeTableData()),
         Provider.value(value: SCF(Server_Connection_Functions())),
         ChangeNotifierProvider.value(value: TabsScreenContext()),
         ChangeNotifierProvider.value(value: OwnerIdData()),
         ChangeNotifierProvider.value(value: AddEventScreenData()),
         ChangeNotifierProvider.value(value: Event()),
-        ChangeNotifierProvider.value(value: EventsData()),
+        ChangeNotifierProvider(create: (context1) => EventsData()),
         ChangeNotifierProvider.value(value: UsernameData()),
         ChangeNotifierProvider.value(value: ProfileData()),
         ChangeNotifierProvider.value(value: AccessTokenData()),
         ChangeNotifierProvider.value(value: EmailAndUsernameData())
       ],
       child: MaterialApp(
+        navigatorKey: materialNavigatorKey, // GlobalKey()
+
         routes: {
           'patchProfileScreen': (context) => PatchProfileScreen(),
           'inviteScreen': (context) => InviteScreen(),
@@ -136,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.brown,
           ),
           title: Text(
-            "patch profile",
+            "Edit profile info",
             style: general_text_style,
           ),
         ),
@@ -264,6 +270,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //sheduledToday = Provider.of<EventsData>(context).events;
     List<Widget> ScatteredListtiles = [
       Column(
         children: [
@@ -285,11 +292,21 @@ class _HomePageState extends State<HomePage> {
                           shrinkWrap: true,
                           itemCount: sheduledToday.length,
                           itemBuilder: (context, index) {
-                            var events = sheduledToday;
+                            var events =
+                                Provider.of<EventsData>(context).events;
+                            ;
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 3, vertical: 5),
                               child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      '/EventsDetailScreen',
+                                      arguments: ScreenArguments(
+                                          id: events[index].id,
+                                          scf: scf,
+                                          context: context));
+                                },
                                 tileColor: events[index].favorite
                                     ? Colors.orange[50]
                                     : Colors.black12,

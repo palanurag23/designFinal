@@ -19,6 +19,13 @@ class SCF {
   }
 }
 
+///wow...global context....get().currentContext
+class MaterialNavigatorKey {
+  GlobalKey materialNavigatorKey;
+  MaterialNavigatorKey({this.materialNavigatorKey});
+  GlobalKey get() => materialNavigatorKey;
+}
+
 class TabsScreenContext with ChangeNotifier {
   BuildContext _context;
 
@@ -46,27 +53,27 @@ class EventsData with ChangeNotifier {
         dateime: DateTime.now(),
         eventType: 'education',
         favorite: true,
-        id: 1,
+        id: 11111,
         name: 'french seminar',
         owner: 'french'),
     Event(
         dateime: DateTime.now(),
         eventType: 'cultural',
-        id: 2,
+        id: 211111,
         favorite: true,
         name: 'fest',
         owner: 'name1'),
     Event(
         dateime: DateTime.now(),
         eventType: 'cultural',
-        id: 3,
+        id: 311111,
         name: 'workshop',
         favorite: true,
         owner: 'name2'),
     Event(
         dateime: DateTime.now(),
         eventType: '',
-        id: 4,
+        id: 411111,
         name: 'event',
         favorite: true,
         owner: 'name3')
@@ -75,7 +82,7 @@ class EventsData with ChangeNotifier {
     int index = events.indexWhere(
       (element) => element.id == id,
     );
-
+    print('fav!');
     Event e = Event(
         name: events[index].name,
         owner: events[index].owner,
@@ -83,7 +90,7 @@ class EventsData with ChangeNotifier {
         eventType: events[index].eventType,
         dateime: events[index].dateime,
         favorite: !events[index].favorite);
-    events[index] = e;
+    this.events[index] = e;
     notifyListeners();
   }
 
